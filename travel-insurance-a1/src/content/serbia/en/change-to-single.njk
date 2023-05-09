@@ -1,0 +1,13 @@
+---js
+{
+  layout: 'change-to-single.njk',
+  title: 'Change Cover',
+  templateEngineOverride: 'md,njk',
+  icon: '/src/assets/doily-icons/chatbubble-travel.svg',
+  eleventyComputed: {
+    assetsPrefix: () => process.env.ENV ? '../../../public/':'../../../',
+    scriptsPath: () => process.env.ENV ? '../../../':'/',
+    permalink: data => `${data.path}/change-to-single/index.html`
+  }
+}
+---

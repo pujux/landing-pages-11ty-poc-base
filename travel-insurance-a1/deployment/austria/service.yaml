@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: a1travelinsurance-austria-svc
+  namespace: integral-versicherung
+  labels:
+    version: test
+spec:
+  selector:
+    app: a1travelinsurance-austria
+  ports:
+    - port: 6789

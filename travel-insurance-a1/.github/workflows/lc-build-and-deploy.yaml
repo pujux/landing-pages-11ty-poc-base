@@ -1,0 +1,85 @@
+name: Build & Deploy to LC Stages
+
+on:
+  workflow_dispatch:
+  push:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16
+          cache: 'npm'
+      - name: npm install & build
+        env:
+          API_URL: ${{ secrets.API_URL }}
+          API_URL_AUSTRIA: ${{ secrets.API_URL_AUSTRIA }}
+          CLIENT_ID: ${{ secrets.CLIENT_ID }}
+          CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
+          ACCESS_TOKEN_USERNAME_AUT: ${{ secrets.ACCESS_TOKEN_USERNAME_AUT }}
+          ACCESS_TOKEN_PASSWORD_AUT: ${{ secrets.ACCESS_TOKEN_PASSWORD_AUT }}
+          SUBSCRIPTION_KEY_AUT: ${{ secrets.SUBSCRIPTION_KEY_AUT }}
+          ACCESS_TOKEN_USERNAME_SRB: ${{ secrets.ACCESS_TOKEN_USERNAME_SRB }}
+          ACCESS_TOKEN_PASSWORD_SRB: ${{ secrets.ACCESS_TOKEN_PASSWORD_SRB }}
+          SUBSCRIPTION_KEY_SRB: ${{ secrets.SUBSCRIPTION_KEY_SRB }}
+          ACCESS_TOKEN_USERNAME_HRV: ${{ secrets.ACCESS_TOKEN_USERNAME_HRV }}
+          ACCESS_TOKEN_PASSWORD_HRV: ${{ secrets.ACCESS_TOKEN_PASSWORD_HRV }}
+          SUBSCRIPTION_KEY_HRV: ${{ secrets.SUBSCRIPTION_KEY_HRV }}
+          BASE_URL: ${{ secrets.BASE_URL }}
+          ASMP_URL: ${{ secrets.ASMP_URL }}
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+
+        run: |
+          npm ci
+          npm run build
+      - name: Archive artifacts for Austria
+        uses: actions/upload-artifact@v3
+        with:
+          name: dist-austria
+          path: |
+            dist-austria
+      - name: Archive artifacts for Serbia
+        uses: actions/upload-artifact@v3
+        with:
+          name: dist-serbia
+          path: |
+            dist-serbia
+      - name: Archive artifacts for Croatia
+        uses: actions/upload-artifact@v3
+        with:
+          name: dist-croatia
+          path: |
+            dist-croatia
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - uses: actions/checkout@v3
+      - uses: azure/docker-login@v1
+        with:
+          login-server: ${{ secrets.REGISTRY_URL }}
+          username: ${{ secrets.REGISTRY_USERNAME }}
+          password: ${{ secrets.REGISTRY_PASSWORD }}
+      - uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+      - uses: azure/aks-set-context@v2
+        with:
+          resource-group: ${{ secrets.AZURE_RESOURCEGROUP }}
+          cluster-name: ${{ secrets.AZURE_CLUSTERNAME }}
+      - uses: actions/download-artifact@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16
+          cache: 'npm'
+      - name: build & push docker images
+        env:
+          ACR_URL: ${{ secrets.REGISTRY_URL }}
+        run: |
+          npm ci
+          npm run docker
+          npm run deploy

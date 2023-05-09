@@ -1,0 +1,29 @@
+.site {
+  --site-spacing: var(--space-l-2xl);
+  --site-padding: var(--space-l-xl);
+
+  &.vers--doily {
+    display: grid;
+    place-content: center;
+  }
+
+  &__header {
+    padding-inline: var(--site-padding);
+    padding-block: var(--space-s);
+  }
+
+  &__content {
+  }
+
+  &__footer {
+    padding: var(--site-padding);
+    background-color: hsl(0 0% var(--color-weight-100));
+  }
+
+  &__doily {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+}

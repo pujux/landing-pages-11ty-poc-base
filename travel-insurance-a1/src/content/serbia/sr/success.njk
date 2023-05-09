@@ -1,0 +1,15 @@
+---js
+{
+  layout: 'doily.njk',
+  title: 'USPEŠNO STE SE REGISTROVALI',
+  templateEngineOverride: 'md,njk',
+  eleventyComputed: {
+    assetsPrefix: () => process.env.ENV ? '../../public/':'../../',
+    permalink: data => `${data.path}/success/index.html`
+  }
+}
+---
+
+## Za pametno putno osiguranje za A1 korisnike
+
+Svu potrebnu dokumentaciju i dodatne informacije smo poslali na e-mail adresu koju ste uneli prilikom registracije. Ukoliko ne vidite e-mail u prijemnom sandučetu molimo proverite folder sa neželjenom poštom (spam ili junk). U slučaju da niste dobili e-mail pozovite Lamie korisnički servis +381 60 79 99 900 ili pišite na a1putnoosiguranje@lamie-direct.com

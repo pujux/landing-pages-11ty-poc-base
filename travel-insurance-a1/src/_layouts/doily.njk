@@ -1,0 +1,13 @@
+---
+layout: base.njk
+bodyClass: "vers--doily"
+---
+<div class="site__doily  doily">
+  {%- if icon -%}
+    <div class="doily__icon" aria-hidden="true">
+      {{ icon | svgContents | safe }}
+    </div>
+  {%- endif -%}
+  <h1 class="doily__title">{{ title }}</h1>
+  {{ content | safe }}
+</div>

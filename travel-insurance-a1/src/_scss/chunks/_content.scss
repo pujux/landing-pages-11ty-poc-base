@@ -1,0 +1,42 @@
+@use '../objects/divider' as divider;
+
+.content {
+  --content-spacing: var(--site-spacing);
+
+  &__hero {
+    padding: var(--content-spacing) var(--site-padding);
+  }
+
+  &__section {
+    padding-block: var(--content-spacing);
+    max-width: var(--wrapper-width);
+    margin-inline: auto;
+    padding-inline: var(--site-padding);
+    box-sizing: content-box;
+    position: relative;
+
+    &.has-divider {
+      &::before {
+        content: '';
+        display: block;
+        @include divider.mixin();
+      }
+    }
+
+    .button {
+      margin-inline: auto;
+    }
+
+    // content-specific styles
+    &.vers--how-it-works {
+
+      h3 {
+        margin-block-start: 1.5em;
+      }
+
+      .how-it-works {
+        margin-block: var(--content-spacing);
+      }
+    }
+  }
+}

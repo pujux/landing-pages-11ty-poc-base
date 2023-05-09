@@ -1,0 +1,37 @@
+{%- macro feature(params) -%}
+{%- set check -%}
+    {{ ('/src/assets/feature-icons/check.svg') | svgContents | safe }}
+{%- endset -%}
+<div class="{{ params.class }}  feature">
+    <dt class="feature__name">
+        <span class="feature__text">{{ params.text }}</span>
+    </dt>
+    <dd class="feature__value">
+        {%- if params.values -%}
+            {%- if params.values.single === 'check' -%}
+                <p>{{ check | safe }}</p>
+            {%- else -%}
+                <p>{{ params.values.single | safe }}</p>
+            {%- endif -%}
+            {%- if params.values.family === 'check' -%}
+                <p>{{ check | safe }}</p>
+            {%- else -%}
+                <p>{{ params.values.family | safe }}</p>
+            {%- endif -%}
+        {%- elseif params.value -%}
+            <p>
+            {%- if params.value === 'check' -%}
+                {{ check | safe }}
+            {%- else -%}
+                {{ params.value | safe  }}
+            {%- endif -%}
+            </p>
+        {%- endif -%}
+    </dd>
+    {%- if params.subfeatures -%}
+    <div class="feature__sub-features">
+        {{ caller() }}
+    </div>
+    {%- endif -%}
+</div>
+{%- endmacro -%}

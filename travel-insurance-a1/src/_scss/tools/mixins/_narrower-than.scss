@@ -1,0 +1,7 @@
+@use "../functions" as *;
+
+@mixin narrower-than($_breakpointName) {
+  @media screen and (max-width: (breakpoint($_breakpointName) - 1px)) {
+    @content;
+  }
+}

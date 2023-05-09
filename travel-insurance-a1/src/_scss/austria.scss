@@ -1,0 +1,87 @@
+@use 'tools' as *;
+
+:root {
+  // overrides
+  --color-highlight-hs: var(--color-apple-green-hs);
+  --color-highlight: var(--color-apple-green);
+  --font-headlines: "Gotham Rounded", sans-serif;
+  --font-base: "Gotham Rounded", sans-serif;
+  font-weight: 400;
+}
+
+.button {
+  border-radius: 1.75em;
+  padding-block-end: calc(.6em - 2px);
+}
+
+.site {}
+
+.header {
+  padding-block: var(--space-l-xl);
+  background-color: #fff;
+  box-shadow:
+    0px 5px 10px rgb(0 0 0 / 0.025),
+    0px 3px 5px rgb(0 0 0 / 0.05),
+    0px 1px 2px rgb(0 0 0 / 0.1);
+}
+
+.content__section {
+  &:nth-of-type(2) {
+    padding-block-start: 0;
+  }
+
+  &.vers--header {
+    position: relative;
+
+    @include wider-than(medium) {
+      text-align: center;
+    }
+
+    .sticker {
+      font-size: var(--step-2);
+
+      @include wider-than(large) {
+        position: absolute;
+        inset-block-start: 23%;
+        inset-inline-end: 10%;
+      }
+    }
+  }
+}
+
+.input-field__input {
+  $p: &;
+  background-color: hsl(var(--color-accent-hs) var(--color-weight-500) / .1);
+  border: none;
+  border-bottom: 1px solid var(--color-accent);
+  height: 2em;
+  line-height: 1;
+  vertical-align: baseline;
+  padding-inline: var(--step--1);
+  padding-block-start: .2em;
+
+  @at-root .additional-people & {
+    background-color: hsl(var(--color-highlight-hs) var(--color-weight-400) / .1);
+    border-bottom: 1px solid var(--color-highlight);
+
+  }
+
+  &[readonly] {
+    background-color: transparent;
+  }
+}
+
+.key-message {
+  text-transform: uppercase;
+  font-weight: 300;
+}
+
+.input-field {
+  &.vers--title {
+    grid-column: auto !important; // per default, title starts in a new row again, but in the case of the austrian version of the site, there are less input fields, making it look really odd. This resets it to its auto behaviour
+  }
+}
+
+.additional-person {
+  background-color: hsl(var(--color-highlight-hs) var(--color-weight-400) / .05) !important;
+}

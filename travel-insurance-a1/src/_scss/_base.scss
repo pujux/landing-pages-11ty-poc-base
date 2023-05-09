@@ -1,0 +1,62 @@
+@use 'objects/base-headline' as base-headline;
+@use 'objects/divider' as divider;
+@use 'tools';
+
+body {
+  font-family: var(--font-base);
+  color: #3b3a3a; // according to design spec; This color is not part of the A1 colors
+  background-color: #fff;
+  accent-color: var(--color-highlight);
+}
+
+:any-link {
+  color: var(--color-highlight);
+  text-decoration: underline;
+  text-decoration-skip-ink: auto;
+
+  &:where(:hover, :focus) {
+    color: hsl(var(--color-highlight-hs) var(--color-weight-400));
+  }
+}
+
+:where(h1, h2, h3, h4, h5, h6) {
+  font-family: var(--font-headlines);
+  line-height: 1.25;
+  font-weight: 500;
+
+  @include tools.wider-than('medium') {
+    text-align: center;
+  }
+}
+
+h1 {
+  font-size: var(--step-5);
+}
+
+h2 {
+  font-size: var(--step-3);
+  text-transform: uppercase;
+}
+
+h3 {
+  @include base-headline.mixin();
+}
+
+p {
+  font-size: var(--step-0);
+  line-height: 1.5;
+  font-weight: 400;
+}
+
+ul, ol {
+  margin: 0;
+}
+
+[role="list"] {
+  list-style: none;
+  padding: 0;
+}
+
+hr {
+  @include divider.mixin();
+}

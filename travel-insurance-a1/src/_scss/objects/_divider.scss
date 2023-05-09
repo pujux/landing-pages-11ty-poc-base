@@ -1,0 +1,12 @@
+@mixin mixin() {
+  width: min(450px, 100%);
+  height: 1px;
+  background-color: currentColor;
+  margin-block-start: calc(var(--content-spacing) * -1);
+  margin-block-end: var(--content-spacing);
+  margin-inline: auto;
+}
+
+.divider {
+  @include mixin();
+}

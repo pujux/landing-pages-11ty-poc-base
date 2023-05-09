@@ -1,0 +1,15 @@
+---js
+{
+  layout: 'doily.njk',
+  title: 'YOU HAVE SUCCESSFULLY REGISTERED',
+  templateEngineOverride: 'md,njk',
+  eleventyComputed: {
+    assetsPrefix: () => process.env.ENV ? '../../../public/':'../../../',
+    permalink: data => `${data.path}/success/index.html`
+  }
+}
+---
+
+## For smart travel insurance for A1 customers.
+
+We have sent all the necessary documentation and additional information to the e-mail address you entered during registration. If you do not find the e-mail in your inbox, please check your spam or junk folder. In case you did not receive an e-mail, call Lamie customer service +381 60 79 99 900 or write to a1putnoosiguranje@lamie-direct.com

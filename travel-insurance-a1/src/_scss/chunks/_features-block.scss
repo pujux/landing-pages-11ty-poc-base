@@ -1,0 +1,53 @@
+@use '../tools/mixins/wider-than' as *;
+
+.features-block {
+  margin-inline: auto;
+  width: min(824px - var(--site-padding), 100%);
+  display: grid;
+  grid-template-columns: auto repeat(var(--columns-count, 1), 1fr);
+  gap: .25em;
+
+  &__column-label {
+    text-align: center;
+    padding-inline: var(--space-l-xl);
+    padding-block: var(--space-xs);
+    background-color: var(--color-light-grey);
+
+    &:first-of-type {
+      grid-column-start: 2;
+    }
+  }
+
+  &__features {
+    display: contents;
+
+    .feature {
+      display: contents;
+
+      &__name {
+        grid-column: 1 / -1;
+        background-color: var(--color-light-grey);
+        padding: var(--space-xs-s);
+        text-align: center;
+        justify-content: center;
+        transform: translateY(.25em);
+
+        @include wider-than('medium') {
+          grid-column: 1 / 2;
+          text-align: start;
+          justify-content: start;
+          transform: none;
+        }
+      }
+
+      &__value {
+        grid-column: 1 / -1;
+        background-color: var(--color-light-grey);
+
+        @include wider-than('medium') {
+          grid-column: 2 / end;
+        }
+      }
+    }
+  }
+}

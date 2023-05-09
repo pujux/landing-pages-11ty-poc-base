@@ -1,0 +1,16 @@
+<h2 class="base-headline">{{ "FAQs" | translate(locale) }}</h2>
+<dl class="faqs">
+  {%- for faq in faqs -%}
+  <div class="faqs__item" x-data="{ open: false }">
+    <dt class="faqs__question" :class="{ 'is-open': open }">
+      <span class="text">{{ faq.data.question }}</span>
+      <button class="button vers--naked  trigger" :aria-expanded="open" @click="open = !open">
+        <span class="sr-only" x-show="!open">{{ "show answer" }}</span>
+        <span class="sr-only" x-show="open">{{ "hide answer" }}</span>
+        <svg width="15" height="9" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="m1 1 6.5 6.5L14 1" stroke="currentcolor" stroke-width="2" stroke-linecap="round"/></svg>
+      </button>
+    </dt>
+    <dd class="faqs__answer" x-show="open" x-transition x-cloak>{{ faq.templateContent | safe }}</dd>
+  </div>
+  {%- endfor -%}
+</dl>

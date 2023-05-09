@@ -1,0 +1,12 @@
+<footer class="footer  site__footer">
+  <img class="footer__logo" src="{{ footerLogo.src }}" alt="{{ footerLogo.alt }}" />
+  {%- if footerLinks -%}
+    <ul class="link-list  footer__links" role="list">
+      {%- for link in footerLinks -%}
+        <li class="link-list__item">
+          <a href="{{ link.href }}" target="_blank" rel="noopener noreferrer" class="footer__link-text">{{ link.text }}</a>
+        </li>
+      {%- endfor -%}
+    </ul>
+  {%- endif -%}
+</footer>

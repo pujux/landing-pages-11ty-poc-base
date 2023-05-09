@@ -1,0 +1,39 @@
+.expandable {
+  --icon-hover-color: var(--color-accent);
+
+  &__summary {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: var(--space-xs-s);
+
+    .text {
+      flex: 1;
+    }
+
+    .trigger {
+      &::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+      }
+
+      &:where(:hover, :focus) {
+        color: var(--icon-hover-color);
+      }
+
+      &:not([aria-expanded="true"]) {
+        & > svg {
+          transform: rotate(-90deg);
+        }
+      }
+    }
+  }
+
+  &__details {
+    padding: var(--space-2xs-xs);
+    border-radius: 2px;
+    background-color: hsl(0 0% 0% / .15);
+    margin-block-start: var(--space-2xs-xs);
+  }
+}

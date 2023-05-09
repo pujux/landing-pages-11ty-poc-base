@@ -1,0 +1,67 @@
+@use '../tools';
+
+.feature {
+  display: grid;
+  grid-template-columns: auto 5.5em;
+  grid-template-rows: [feature-start] 1fr [feature-end sub-features-start] auto [sub-features-end];
+  align-items: center;
+
+  &__name {
+    display: flex;
+    align-items: center;
+    gap: 1.5em;
+  }
+
+  &__icon {
+    display: none;
+    width: 2em;
+    position: relative;
+
+    @include tools.wider-than('medium') {
+      display: block;
+    }
+
+    svg, img {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+  }
+
+  &__value {
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: stretch;
+    gap: 2px;
+
+    > p {
+      flex: 1;
+      text-align: center;
+      background-color: var(--color-light-grey);
+      padding-block: var(--space-xs);
+      white-space: nowrap;
+    }
+
+    strong {
+      color: var(--color-highlight);
+    }
+
+    svg {
+      color: var(--color-highlight);
+      display: inline-block;
+      height: 1.5em;
+      width: auto;
+    }
+  }
+
+  &__sub-features {
+    padding-block-start: var(--step-0);
+    padding-inline-start: var(--space-m-l);
+    grid-column: 1 / -1;
+    grid-row: sub-features-start / sub-features-end;
+    display: flex;
+    flex-direction: column;
+    gap: var(--step--2);
+  }
+}

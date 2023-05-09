@@ -1,0 +1,13 @@
+/**
+This is just the list. If you are looking for the individual features, go to ../objects/_feature.scss
+ */
+.features {
+  &__item {
+    font-size: var(--step-0);
+    padding-block: var(--space-xs);
+
+    &:nth-child(odd) {
+      background-color: var(--color-light-grey);
+    }
+  }
+}

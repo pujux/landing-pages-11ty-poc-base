@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: a1travelinsurance-austria
+  namespace: integral-versicherung
+  labels:
+    version: test
+spec:
+  replicas: 1
+  revisionHistoryLimit: 0
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: a1travelinsurance-austria
+  template:
+    metadata:
+      labels:
+        app: a1travelinsurance-austria
+    spec:
+      containers:
+        - name: a1travelinsurance
+          image: leanregistry.azurecr.io/leancoders/integral-versicherung/a1travelinsurance-austria:latest
+          imagePullPolicy: Always
+          env:
+            - name: LOGSENE_ENABLED_DEFAULT
+              value: 'true'
+            - name: LOGSENE_ENABLED
+              value: 'true'
+            - name: SPM_ENABLED
+              value: 'false'
+            - name: SPM_TOKEN
+              value: '__spmtoken__'
+            - name: LOGSENE_TOKEN
+              value: '__logsenetoken__'
+          readinessProbe:
+            httpGet:
+              path: /api/health
+              port: 6789
+            initialDelaySeconds: 20
+            timeoutSeconds: 1
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /api/health
+              port: 6789
+            initialDelaySeconds: 20
+            timeoutSeconds: 1
+            periodSeconds: 10
+          ports:
+            - containerPort: 6789
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 10

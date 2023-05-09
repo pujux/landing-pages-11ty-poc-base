@@ -1,0 +1,15 @@
+---js
+{
+  layout: 'doily.njk',
+  title: 'Congrats',
+  templateEngineOverride: 'md,njk',
+  eleventyComputed: {
+    assetsPrefix: () => process.env.ENV ? '../../../public/':'../../../',
+    permalink: data => `${data.path}/success/index.html`
+  }
+}
+---
+
+## You have successfully activated Travel Insurance for A1 users.
+
+We have sent all the necessary documentation and additional information to the e-mail address you entered during registration.

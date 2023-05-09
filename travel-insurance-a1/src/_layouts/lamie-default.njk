@@ -1,0 +1,36 @@
+---
+layout: base.njk
+---
+{% from "macros/content-section.njk" import contentSection as section %}
+
+{% set headerClass = "site__header" %}
+{% set lamieLogo = {
+  src: assetsPrefix + "assets/lamie-logo.svg",
+  href: links.lamie,
+  alt: "powered by L\'amie" | translate(locale),
+  linkText: "to the L\'amie website" | translate(locale)
+} %}
+
+{% set logoA = lamieLogo %}
+{%- include "header.njk" -%}
+
+<main class="content  site__content">
+  {%- call section({class: "vers--header"}) -%}
+    <h2 class="base-headline">{{ "Activate your" | translate(locale) }}</h2>
+    <p class="key-message">{{ "Smart Travel Cover" | translate(locale) }}</p>
+    {%- if showSticker -%}
+      <p class="sticker">
+        <span class="main">{{ "Free" | translate(locale) }}</span>
+        <span class="sub">{{ "in August" | translate(locale) }}</span>
+      </p>
+    {%- endif -%}
+  {%- endcall -%}
+
+  {%- call section() -%}
+    <div id="app"></div>
+  {%- endcall -%}
+</main>
+
+{% set footerLogo = lamieLogo %}
+{%- include "footer.njk" -%}
+<script type="module" src="{{ assetsPrefix + '../_svelte/main.ts' }}"></script>

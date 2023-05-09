@@ -1,0 +1,5 @@
+---
+eleventyComputed:
+  permalink: "{{ path }}/api.json"
+---
+{{ api | jsonify | safe }}

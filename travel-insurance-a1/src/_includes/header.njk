@@ -1,0 +1,17 @@
+<header class="header  {{ headerClass }}">
+    {%- if logoA -%}
+        <a class="header__logo-a" href="{{ logoA.href }}" target="_blank" rel="noopener noreferrer">
+            <img src="{{ logoA.src }}" alt="{{ logoA.alt }}" loading="lazy">
+            <span class="sr-only">{{ logoA.linkText }}</span>
+        </a>
+    {%- endif -%}
+    <nav class="header__lang-nav" aria-label="{{ 'Change Language' | translate(locale) }}">
+        {%- include 'languages-list.njk' -%}
+    </nav>
+    {%- if logoB -%}
+        <a class="header__logo-b" href="{{ logoB.href }}" target="_blank" rel="noopener noreferrer">
+            <img src="{{ logoB.src }}" alt="{{ logoB.alt }}" loading="lazy">
+            <span class="sr-only">{{ logoB.linkText }}</span>
+        </a>
+    {%- endif -%}
+</header>

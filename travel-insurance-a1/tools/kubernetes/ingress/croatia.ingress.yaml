@@ -1,0 +1,31 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: a1travelinsurance-croatia-ingress
+  namespace: integral-versicherung
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    ingress.kubernetes.io/ssl-redirect: 'true'
+    certmanager.k8s.io/cluster-issuer: letsencrypt-prod
+    nginx.ingress.kubernetes.io/rewrite-target: /
+    nginx.ingress.kubernetes.io/from-to-www-redirect: 'true'
+    nginx.ingress.kubernetes.io/configuration-snippet: |
+      if ($host = 'www.a1-travelinsurance-croatia.leancoders.dev' ) {
+        rewrite ^ https://a1-travelinsurance-croatia.leancoders.dev$request_uri permanent;
+      }
+spec:
+  tls:
+    - hosts:
+        - a1-travelinsurance-croatia.leancoders.dev
+      secretName: tls-a1travelinsurance-secret
+  rules:
+    - host: a1-travelinsurance-croatia.leancoders.dev
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: a1travelinsurance-croatia-svc
+                port:
+                  number: 6789

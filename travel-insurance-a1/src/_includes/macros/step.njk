@@ -1,0 +1,11 @@
+{%- macro step(params) -%}
+<li class="how-it-works__step">
+    <span class="how-it-works__icon">
+        <img src="{{ params.prefix + 'assets/how-it-works-' + params.number + '.png' }}" alt="" loading="lazy">
+    </span>
+    <h4 class="how-it-works__label">{{ params.label }}</h4>
+    {%- if params.text -%}
+        <p>{{ params.text }}</p>
+    {%- endif -%}
+</li>
+{%- endmacro -%}

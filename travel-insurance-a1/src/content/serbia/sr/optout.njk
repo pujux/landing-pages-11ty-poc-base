@@ -1,0 +1,12 @@
+---js
+{
+  layout: 'optout.njk',
+  title: 'Deactivation',
+  templateEngineOverride: 'md,njk',
+  eleventyComputed: {
+    assetsPrefix: () => process.env.ENV ? '../../public/':'../../',
+    scriptsPath: () => process.env.ENV ? '../../':'/',
+    permalink: data => `${data.path}/optout/index.html`
+  }
+}
+---

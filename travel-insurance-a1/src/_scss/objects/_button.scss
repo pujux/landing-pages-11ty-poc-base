@@ -1,0 +1,65 @@
+.button {
+  display: flex;
+  align-items: center;
+  gap: 1em;
+  justify-content: center;
+  font-size: var(--step-0);
+  background-color: var(--color-accent);
+  line-height: 1;
+  text-decoration: none;
+  color: #fff;
+  text-transform: uppercase;
+  font-weight: 500;
+  width: min(360px, 100%);
+  padding-inline: 1em;
+  padding-block: .6em;
+  transition: background-color var(--animation-base-duration) var(--animation-base-easing);
+  border: 0;
+
+  &:where(:hover, :focus) {
+    cursor: pointer;
+    background-color: var(--color-accent-400);
+  }
+
+  &:disabled {
+    pointer-events: none;
+    filter: grayscale(1);
+    opacity: .75;
+    cursor: not-allowed;
+  }
+
+  &:active {
+    background-color: var(--color-accent-500);
+  }
+
+  &.vers--outline {
+    color: currentColor;
+    border: 1px solid currentColor;
+    background-color: transparent;
+
+    &:where(:hover, :focus) {
+      background-color: hsl(0 0% 0% / 0.05);
+    }
+  }
+
+  &.vers--naked {
+    font: inherit;
+    color: inherit;
+    background-color: transparent;
+    display: inline-block;
+    padding: 0;
+    width: auto;
+    border: 0;
+
+    &:where(:hover, :focus) {
+      cursor: pointer;
+      color: var(--color-accent);
+    }
+  }
+
+  &__spinner {
+    position: relative;
+    height: 1em;
+    width: 1em;
+  }
+}

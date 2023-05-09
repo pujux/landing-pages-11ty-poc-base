@@ -1,0 +1,104 @@
+@use "vendor/reset";
+@use "settings";
+
+:root {
+  // semantic colors, a1
+  --hot-red-hs: 4.1 77.2%;
+  --hot-red: hsl(var(--hot-red-hs) 48.2%);
+  --cool-blue-hs: 198.6 30.8%;
+  --cool-blue: hsl(var(--cool-blue-hs) 52.9%);
+
+  // semantic colors, lamie
+  --color-verdigris-hs: 175 98%;
+  --color-verdigris: hsl(var(--color-verdigris-hs) 22%);
+  --color-apple-green-hs: 85 62%;
+  --color-apple-green: hsl(var(--color-apple-green-hs) 43%);
+  --color-tangerine-hs: 18 78%;
+  --color-tangerine: hsl(var(--color-tangerine-hs) 50%);
+  --color-deep-carmine-hs: 6 86%;
+  --color-deep-carmine: hsl(var(--color-deep-carmine-hs) 54%);
+
+  // application colors
+  --color-error-hs: 7 90%;
+  --color-error: hsl(var(--color-error-hs) 48.2%);
+
+  // functional colors
+  --color-primary-hs: 0 0%;
+  --color-primary: hsl(var(--color-primary-hs) 0%);
+  --color-accent-hs: var(--color-verdigris-hs);
+  --color-accent: var(--color-verdigris);
+  --color-highlight-hs: var(--color-deep-carmine-hs);
+  --color-highlight: var(--color-deep-carmine);
+  @each $weight, $value in settings.$color-weights {
+    --color-weight-#{$weight}: #{$value};
+    --color-primary-#{$weight}: hsl(var(--color-primary-hs) var(--color-weight-#{$weight}));
+    --color-accent-#{$weight}: hsl(var(--color-accent-hs) var(--color-weight-#{$weight}));
+    --color-highlight-#{$weight}: hsl(var(--color-highlight-hs) var(--color-weight-#{$weight}));
+    --color-error-#{$weight}: hsl(var(--color-error-hs) var(--color-weight-#{$weight}));
+  }
+  // ...these are technically identical with the weighted versions of primary, but as there is no weighting for any of the colors according to the A1 styleguide, these colors need to exist like this as well, to match the A1 styleguide
+  --color-light-grey: hsl(0 0% var(--color-weight-100));
+  --color-grey: hsl(0 0% var(--color-weight-200));
+  --color-medium-grey: hsl(0 0% var(--color-weight-300));
+  --color-dark-grey: hsl(0 0% var(--color-weight-400));
+  --color-heavy-grey: hsl(0 0% var(--color-weight-500));
+
+  // fluid type scale by utopia; Edit here: https://utopia.fyi/type/calculator?c=320,14,1.2,1140,16,1.333,5,2,&s=0.75|0.5|0.25,1.5|2|3|4|6,s-l
+  --step--2: clamp(0.56rem, calc(0.63rem + -0.09vw), 0.61rem);
+  --step--1: clamp(0.73rem, calc(0.72rem + 0.04vw), 0.75rem);
+  --step-0: clamp(0.88rem, calc(0.83rem + 0.24vw), 1.00rem);
+  --step-1: clamp(1.05rem, calc(0.94rem + 0.55vw), 1.33rem);
+  --step-2: clamp(1.26rem, calc(1.06rem + 1.01vw), 1.78rem);
+  --step-3: clamp(1.51rem, calc(1.18rem + 1.67vw), 2.37rem);
+  --step-4: clamp(1.81rem, calc(1.29rem + 2.62vw), 3.16rem);
+  --step-5: clamp(2.18rem, calc(1.38rem + 3.96vw), 4.21rem);
+
+  // font faces
+  --font-stack-system: -apple-system, blinkmacsystemfont, "Segoe UI", roboto, oxygen-sans, ubuntu, cantarell,
+  "Helvetica Neue", sans-serif;
+  --font-stack-mono: monospace;
+  --font-headlines: var(--font-stack-system);
+  --font-base: var(--font-stack-system);
+
+  // Fluid Spacing scale by Utopia; Edit here: https://utopia.fyi/space/calculator/?c=320,14,1.2,1140,16,1.333,5,2,&s=0.75|0.5|0.25,1.5|2|3|4|6,l-2xl,
+  --space-3xs: clamp(0.25rem, calc(0.25rem + 0.00vw), 0.25rem);
+  --space-2xs: clamp(0.44rem, calc(0.41rem + 0.12vw), 0.50rem);
+  --space-xs: clamp(0.69rem, calc(0.66rem + 0.12vw), 0.75rem);
+  --space-s: clamp(0.88rem, calc(0.83rem + 0.24vw), 1.00rem);
+  --space-m: clamp(1.31rem, calc(1.24rem + 0.37vw), 1.50rem);
+  --space-l: clamp(1.75rem, calc(1.65rem + 0.49vw), 2.00rem);
+  --space-xl: clamp(2.63rem, calc(2.48rem + 0.73vw), 3.00rem);
+  --space-2xl: clamp(3.50rem, calc(3.30rem + 0.98vw), 4.00rem);
+  --space-3xl: clamp(5.25rem, calc(4.96rem + 1.46vw), 6.00rem);
+  // increase the spacing from one step to the next
+  --space-3xs-2xs: clamp(0.25rem, calc(0.15rem + 0.49vw), 0.50rem);
+  --space-2xs-xs: clamp(0.44rem, calc(0.32rem + 0.61vw), 0.75rem);
+  --space-xs-s: clamp(0.69rem, calc(0.57rem + 0.61vw), 1.00rem);
+  --space-s-m: clamp(0.88rem, calc(0.63rem + 1.22vw), 1.50rem);
+  --space-m-l: clamp(1.31rem, calc(1.04rem + 1.34vw), 2.00rem);
+  --space-l-xl: clamp(1.75rem, calc(1.26rem + 2.44vw), 3.00rem);
+  --space-xl-2xl: clamp(2.63rem, calc(2.09rem + 2.68vw), 4.00rem);
+  --space-2xl-3xl: clamp(3.50rem, calc(2.52rem + 4.88vw), 6.00rem);
+  --space-l-2xl: clamp(1.75rem, calc(0.87rem + 4.39vw), 4.00rem);
+
+  // dimensions
+  --wrapper-width: #{settings.$wrapper};
+
+  // misc
+  --animation-base-duration: 150ms;
+  --animation-base-easing: linear;
+
+  @media (prefers-reduced-motion: no-preference) {
+    --animation-base-duration: 175ms;
+    --animation-base-easing: cubic-bezier(0.85, 0, 0.15, 1);
+  }
+}
+
+::selection {
+  background-color: var(--color-highlight);
+  color: var(--color-primary);
+}
+
+* {
+  box-sizing: border-box;
+}

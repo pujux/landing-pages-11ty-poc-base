@@ -1,0 +1,178 @@
+---js
+{
+  layout: 'doily.njk',
+  title: 'ASMP Test',
+  templateEngineOverride: 'md,njk',
+  eleventyComputed: {
+    assetsPrefix: () => process.env.ENV ? '../../public/':'../../',
+    scriptsPath: () => process.env.ENV ? '../../':'/',
+    permalink: data => `${data.path}/asmp-test/index.html`
+  }
+}
+---
+<div x-data="request" style="display: flex; flex-direction: column; gap: 2em;">
+  <div x-cloak x-show="!code">
+    <p>Click the button to verify your phone number via ASMP!</p>
+    <button class="button vers--outline" @click="redirect">Go to ASMP</button>
+  </div>
+  <div x-cloak x-show="code && !authenticated">
+    <p>Great! You have a code:</p>
+    <p class="error"><code x-text="code"></code></p>
+    <p>With this code, get a HTTP auth cookie:</p>
+    <button class="button" @click="getCookie" :disabled="disabled">
+    <span class="button__spinner" x-cloak x-show="loading">
+      <svg class="spinner" viewBox="0 0 50 50"><circle class="path" stroke="currentcolor" cx="25" cy="25" r="20" fill="none" stroke-width="7"></circle></svg>
+    </span>
+      get HTTP cookie
+    </button>
+  </div>
+  <div x-cloak x-show="authenticated && !phone">
+    <p>You are authenticated! Get the phone number:</p>
+    <button class="button" @click="getPhone" :disabled="disabled">
+    <span class="button__spinner" x-cloak x-show="loading">
+      <svg class="spinner" viewBox="0 0 50 50"><circle class="path" stroke="currentcolor" cx="25" cy="25" r="20" fill="none" stroke-width="7"></circle></svg>
+    </span>
+      get phone number
+    </button>
+  </div>
+  <div x-cloak x-show="phone">
+    <p>Phone number was verified and retrieved:</p>
+    <p class="error"><code x-text="phone"></code></p>
+  </div>
+  <div x-cloak x-show="error">
+    <p class="error">Error: <code x-text="error"></code></p>
+  </div>
+</div>
+
+<script type="module">
+  import Alpine from 'alpinejs';
+  import {fetchAccessToken} from "{{ scriptsPath }}_svelte/api/fetchAccessToken";
+  import {deactivateInsurance} from "{{ scriptsPath }}_svelte/api/deactivateInsurance";
+  import {redirectToExternalService} from "{{ scriptsPath }}_svelte/api/redirectToExternalService";
+  import {fetchHTTPCookie} from "{{ scriptsPath }}_svelte/api/fetchHTTPCookie";
+  import {fetchPhoneNumber} from "{{ scriptsPath }}_svelte/api/fetchPhoneNumber";
+
+  // initialize alpine
+  window.Alpine = Alpine;
+
+  const urlParams = new URLSearchParams(window.location.search);
+  const urlHash = window.location.hash;
+  const urlHashCode = urlHash.split('=')[0].split('#')[1];
+  const code = urlHash && urlHashCode === 'code' && urlHash.split('=')[1];
+  const error = urlHash && urlHashCode === 'error' && urlHash.split('=')[1].split('&')[0];
+
+  // build the config object for the api Requests
+  let apiRequestConfig = {
+    code: code,
+    asmpUrl: '{{ configData.externalPhoneVerificationUrl }}',
+    apis: {
+      auth: {
+        subscriptionKey: '{{ api.auth.subscriptionKey }}',
+        username: '{{ api.auth.username }}',
+        password: '{{ api.auth.password }}',
+        basic: '{{ api.auth.basic }}'
+      },
+      methods: {
+        accessToken: '{{ api.methods.accessToken }}',
+        validateNumber: '{{ api.methods.deactivate }}',
+        httpCookie: '{{ api.methods.httpCookie }}',
+        getPhoneNumber: '{{ api.methods.getPhoneNumber }}'
+      }
+    },
+    auth: undefined
+  }
+
+  // get the access token
+  fetchAccessToken(apiRequestConfig).then(response => {
+    if (!response || response.status === 'error') {
+      console.log('Access Token Error: ', response.message);
+      return;
+    } else {
+      apiRequestConfig.auth = `${response.data.token_type} ${response.data.access_token}`;
+    }
+  });
+
+  document.addEventListener('alpine:init', () => {
+    Alpine.data('request', () => ({
+      code: code,
+      phone: undefined,
+      success: false,
+      error: null,
+      disabled: false,
+      loading: false,
+      authenticated: false,
+      init() {
+        if (error) {
+          this.error = `Error: ${error}: ${urlParams.get('error_description')}`;
+        }
+      },
+      async getPhone() {
+        this.loading = true;
+        this.disabled = true;
+        this.error = null;
+        this.success = false;
+        try {
+          const response = await fetchPhoneNumber(apiRequestConfig);
+          if (response.status === 'error') {
+            this.error = response.message;
+          } else {
+            this.phone = response.data.mobile_phone_number;
+          }
+        } catch (error) {
+          this.error = error.message;
+        }
+        this.loading = false;
+        this.disabled = false;
+      },
+      async getCookie() {
+        this.loading = true;
+        this.disabled = true;
+
+        fetchHTTPCookie(apiRequestConfig).then(response => {
+          if (!response || response.status === 'error') {
+            this.error = response.message || response.error;
+            this.loading = false;
+            this.disabled = false;
+          } else {
+            this.error = null;
+            this.loading = false;
+            this.disabled = false;
+            this.authenticated = true;
+          }
+        });
+      },
+      async redirect() {
+        this.loading = true;
+        this.disabled = true;
+
+        redirectToExternalService(apiRequestConfig.asmpUrl);
+      },
+      async submit() {
+        this.disabled = true;
+        this.loading = true;
+
+        deactivateInsurance(apiRequestConfig).then(response => {
+          this.error = null;
+          this.loading = false;
+
+          if (!response || response.status === 'error') {
+            if (response.status === 'error') {
+              this.disabled = false;
+
+              if (response.error !== '') {
+                this.error = response.error;
+              } else {
+                this.error = '{{ "An unknown error occurred trying to deactivate the insurance cover." | translate(locale) }}';
+              }
+            }
+            return;
+          } else {
+            this.success = true;
+          }
+        });
+      }
+    }))
+  });
+
+  Alpine.start();
+</script>

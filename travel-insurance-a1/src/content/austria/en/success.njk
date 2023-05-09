@@ -1,0 +1,16 @@
+---js
+{
+  layout: 'doily.njk',
+  title: 'Congrats.',
+  templateEngineOverride: 'md,njk',
+  icon: '/src/assets/doily-icons/chatbubble-travel.svg',
+  eleventyComputed: {
+    assetsPrefix: () => process.env.ENV ? '../../../public/':'../../../',
+    permalink: data => `${data.path}/success/index.html`
+  }
+}
+---
+
+## You successfully activated your smart travel Protection
+
+You'll find further Information in your mailbox.

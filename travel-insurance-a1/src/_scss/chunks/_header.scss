@@ -1,0 +1,22 @@
+.header {
+  gap: var(--space-l-2xl);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  &__logo-a {
+
+  }
+
+  &__lang-nav {
+    flex: 1;
+
+    > .languages-list {
+      justify-content: end;
+    }
+  }
+
+  &__logo-b {
+
+  }
+}

@@ -1,0 +1,15 @@
+---js
+{
+  layout: 'doily.njk',
+  title: 'Čestitamo',
+  templateEngineOverride: 'md,njk',
+  eleventyComputed: {
+    assetsPrefix: () => process.env.ENV ? '../../public/':'../../',
+    permalink: data => `${data.path}/success/index.html`
+  }
+}
+---
+
+## Uspješno ste aktivirali Putno osiguranje za A1 korisnike
+
+Svu potrebnu dokumentaciju i dodatne podatke poslali smo na e-mail adresu koju ste unijeli prilikom registracije.

@@ -1,0 +1,13 @@
+@use '../tools';
+
+.highlight-message {
+  font-size: var(--step-5);
+  font-weight: 400;
+  color: #848484;
+  line-height: 1.25;
+  text-transform: none;
+
+  @include tools.wider-than('medium') {
+    text-align: center;
+  }
+}

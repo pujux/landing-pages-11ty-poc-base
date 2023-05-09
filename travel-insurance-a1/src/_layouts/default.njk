@@ -1,0 +1,169 @@
+---
+layout: base.njk
+---
+{% from "macros/content-section.njk" import contentSection as section %}
+{% from "macros/feature.njk" import feature as featureItem  %}
+{% from "macros/step.njk" import step  %}
+{% from "macros/expandable.njk" import expandable %}
+
+{% set headerClass = "site__header" %}
+{% set logoA = {
+    src: assetsPrefix + "assets/a1-logo.png",
+    href: links.a1,
+    alt: "A1 Logo" | translate(locale),
+    linkText: "to the A1 website" | translate(locale)
+} %}
+{% set logoB = {
+    src: assetsPrefix + "assets/lamie-logo.png",
+    href: links.lamie,
+    alt: "powered by L\'amie" | translate(locale),
+    linkText: "to the L\'amie website" | translate(locale)
+} %}
+{%- include "header.njk" -%}
+
+{%- set features = collections.feature | selectByCountryLanguage(country, locale) | sort(false, true, "data.order") -%}
+{%- set whys = collections.why | selectByCountryLanguage(country, locale) | sort(false, true, "data.order") -%}
+{%- set faqs = collections.faq | selectByCountryLanguage(country, locale) | sort(false, true, "data.order") -%}
+
+<main class="content  site__content">
+    {%- set heroClass = "content__hero" -%}
+    {%- include "hero.njk" -%}
+
+    {%- call section() -%}
+        <h2 class="base-headline">{{ "Activate your Smart Travel Protection" | translate(locale) }}</h2>
+        <p class="key-message">{{ "You pay the insured days only." | translate(locale) }}</p>
+    {%- endcall -%}
+
+    {%- if features | length -%}
+        {%- call section() -%}
+            <h3>{{ "Your Protection" | translate(locale) }}</h3>
+            {%- for category, features in features | groupby('data.category') -%}
+                {%- if category !== 'undefined' %}
+                    <div class="features-category" x-data="{ open: false }" :class="{ 'is-open': open }" id="{{ category }}">
+                        <div class="features-category__header">
+                            {%- if features[0].data.categorymeta.icon -%}
+                                <span class="features-category__icon">{{ features[0].data.categorymeta.icon | svgContents | safe }}</span>
+                            {%- endif -%}
+                            <h4 class="features-category__headline">{{ features[0].data.categorymeta.title }}</h4>
+                            {%- if features[0].data.categorymeta.description -%}
+                                <p class="features-category__description">{{ features[0].data.categorymeta.description }}</p>
+                            {%- endif -%}
+                        </div>
+                        <div class="features-block" x-show="open" x-transition x-cloak style="--columns-count: {{ features[0].data.columns.length }}">
+                            {%- for column in features[0].data.columns -%}
+                                <div class="features-block__column-label">{{ column | safe }}</div>
+                            {%- endfor -%}
+                            <dl class="features-block__features  features">
+                                {%- for feature in features -%}
+                                    {%- call featureItem({
+                                        prefix: assetsPrefix,
+                                        class: "features__item",
+                                        text: feature.data.title,
+                                        icon: feature.data.icon,
+                                        value: feature.data.value,
+                                        values: feature.data.values,
+                                        subfeatures: feature.data.subfeatures
+                                    }) -%}
+                                    {%- if feature.data.subfeatures -%}
+                                        {%- for subfeature in feature.data.subfeatures -%}
+                                            {{ featureItem({
+                                                prefix: assetsPrefix,
+                                                text: subfeature.title,
+                                                icon: subfeature.icon,
+                                                value: subfeature.value
+                                            }) }}
+                                        {%- endfor -%}
+                                    {%- endif -%}
+                                    {%- endcall -%}
+                                {%- endfor -%}
+                            </dl>
+                        </div>
+                        <button class="button vers--outline  features-category__button" :aria-expanded="open" @click="open = !open">
+                            <span x-show="!open">{{ "show more" | translate(locale) }}</span>
+                            <span x-show="open">{{ "show less" | translate(locale) }}</span>
+                            <svg width="15" height="9" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="m1 1 6.5 6.5L14 1" stroke="currentcolor" stroke-width="2" stroke-linecap="round"/></svg>
+                        </button>
+                    </div>
+                {%- endif -%}
+            {%- endfor -%}
+        {%- endcall -%}
+    {%- endif -%}
+
+    {%- if whys | length -%}
+        {%- call section({class: "has-divider"}) -%}
+            <h3>{{ "Why?" | translate(locale) }}</h3>
+            <ul class="whys" role="list">
+                {%- for why in whys -%}
+                    <li class="whys__item  why">
+                        <span class="why__icon">{{ ('/src/assets/why-icons/' + why.data.icon) | svgContents | safe }}</span>
+                        <p class="why__headline">{{ why.data.headline }}</p>
+                        {%- if why.data.description -%}
+                            <p class="why__description">{{ why.data.description }}</p>
+                        {%- endif -%}
+                    </li>
+                {%- endfor %}
+            </ul>
+        {%- endcall -%}
+    {%- endif -%}
+
+    {%- call section({class: "has-divider vers--how-it-works"}) -%}
+        <h2>{{ "That's how it works:" | translate(locale) }}</h2>
+        <ol class="how-it-works" role="list">
+            {{ step({ prefix: assetsPrefix, number: 1, label: "Register for free" | translate(locale), text: "Register for free by choosing Individual or Group insurance." | translate(locale) }) }}
+            {{ step({ prefix: assetsPrefix, number: 2, label: "Switch on" | translate(locale), text: "You switch your mobile on abroad once. (Roaming services do not have to be activated!)" | translate(locale) }) }}
+            {{ step({ prefix: assetsPrefix, number: 3, label: "Protection Activated" | translate(locale), text: "Your travel protection is automatically activated. You can simply deactivate it by clicking - your choice." | translate(locale) }) }}
+            {{ step({ prefix: assetsPrefix, number: 4, label: "Protection Deactivated" | translate(locale), text: "Coming back your travel protection is automatically deactivated until your next Journey. Automatic protection, only when you really need it!" | translate(locale) }) }}
+        </ol>
+    {%- endcall -%}
+
+    {%- call section({class: "has-divider"}) -%}
+        <div id="app"></div>
+    {%- endcall -%}
+
+    {%- if faqs | length -%}
+        {%- call section({class: "has-divider"}) -%}
+            {%- include "faqs.njk" -%}
+        {%- endcall -%}
+    {%- endif -%}
+    {%- if configData.footer %}
+        <footer class="site__footer  footer">
+            <div class="wrapper">
+                <span class="footer__logo">
+                    {{ ('/src/assets/lamie-logo.svg') | svgContents | safe }}
+                </span>
+                <h2>{{ configData.footer.companyName[locale] | safe }}</h2>
+                <dl class="footer__imprint">
+                    {%- if configData.address -%}
+                        <div>
+                            <dt>{{ "Address" | translate(locale) }}</dt>
+                            <dd>{{ configData.address }}</dd>
+                        </div>
+                    {%- endif -%}
+                    <div>
+                        <dt>{{ "Contact" | translate(locale) }}</dt>
+                        <dd>
+                            <span>{{ "Telephone" | translate(locale) }}: <a href="tel:{{ configData.helpdeskTel }}">{{ configData.helpdeskTel }}</a></span><br>
+                            <span>{{ "Email" | translate(locale) }}: <a href="mailto:{{ configData.helpdeskEmail }}">{{ configData.helpdeskEmail }}</a></span>
+                        </dd>
+                    </div>
+                </dl>
+                <p>{{ configData.footer.companyRepresentation[locale] | safe }}</p>
+                {%- if configData.footer.infos -%}
+                <dl class="footer__infos">
+                    {%- for item in configData.footer.infos -%}
+                        {%- call expandable({ summary: item.summary[locale], details: item.details[locale] }) -%}
+                        {%- endcall -%}
+                    {%- endfor -%}
+                </dl>
+                {%- endif -%}
+            </div>
+        </footer>
+    {%- endif %}
+</main>
+<script type="module">
+    import Alpine from 'alpinejs'
+
+    window.Alpine = Alpine
+    Alpine.start();
+</script>
+<script type="module" src="{{ assetsPrefix + '../_svelte/main.ts' }}"></script>

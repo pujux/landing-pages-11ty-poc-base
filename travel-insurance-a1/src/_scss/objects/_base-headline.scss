@@ -1,0 +1,16 @@
+@use '../tools';
+
+@mixin mixin() {
+  font-family: var(--font-headlines);
+  font-size: var(--step-2);
+  text-transform: uppercase;
+  font-weight: 400;
+
+  @include tools.wider-than('medium') {
+    text-align: center;
+  }
+}
+
+.base-headline {
+  @include mixin();
+}

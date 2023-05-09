@@ -1,0 +1,21 @@
+apiVersion: certmanager.k8s.io/v1alpha1
+kind: Certificate
+metadata:
+  name: tls-a1travelinsurance-secret
+  namespace: default
+spec:
+  secretName: tls-a1travelinsurance-secret
+  commonName: a1-travelinsurance-serbia.leancoders.dev
+  dnsNames:
+    - a1-travelinsurance-serbia.leancoders.dev
+    - a1-travelinsurance-croatia.leancoders.dev
+  acme:
+    config:
+      - http01:
+          ingressClass: nginx
+        domains:
+          - a1-travelinsurance-serbia.leancoders.dev
+          - a1-travelinsurance-croatia.leancoders.dev
+  issuerRef:
+    name: letsencrypt-prod
+    kind: ClusterIssuer

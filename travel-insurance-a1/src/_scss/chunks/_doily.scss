@@ -1,0 +1,49 @@
+.doily {
+  &__icon {
+    margin-block-end: var(--space-l-xl);
+
+    svg {
+      display: block;
+      max-width: 100%;
+    }
+  }
+
+  &__title {
+    font-size: var(--step-5);
+    font-weight: 500;
+    text-transform: uppercase;
+    color: var(--color-accent);
+    margin-block-end: var(--space-s-m);
+  }
+
+  :where(h2, .doily__intro) {
+    font-size: var(--step-2);
+    font-weight: 400;
+    text-transform: uppercase;
+    margin-block-end: 1em;
+    max-width: 40ch;
+    margin-inline: auto;
+    text-align: center;
+  }
+
+  p {
+    max-width: 40ch;
+    margin-inline: auto;
+
+    + p {
+      margin-block-start: var(--space-s);
+    }
+  }
+
+  button {
+    margin-block-start: 1em;
+    margin-inline: auto;
+  }
+
+  .error {
+    padding: var(--step-0);
+    border-radius: 2px;
+    background-color: var(--color-light-grey);
+    color: var(--color-accent);
+  }
+}

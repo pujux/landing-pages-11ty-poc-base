@@ -1,0 +1,13 @@
+---js
+{
+  layout: 'optout.njk',
+  title: 'Deactivation',
+  templateEngineOverride: 'md,njk',
+  icon: '/src/assets/doily-icons/chatbubble-travel.svg',
+  eleventyComputed: {
+    assetsPrefix: () => process.env.ENV ? '../../public/':'../../',
+    scriptsPath: () => process.env.ENV ? '../../':'/',
+    permalink: data => `${data.path}/optout/index.html`
+  }
+}
+---

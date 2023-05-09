@@ -1,0 +1,13 @@
+{%- macro expandable(params) -%}
+  <div class="expandable" x-data="{ open: false }">
+    <dt class="expandable__summary" :class="{ 'is-open': open }">
+      <span class="text">{{ params.summary | safe }}</span>
+      <button class="button vers--naked  trigger" :aria-expanded="open" @click="open = !open">
+        <span class="sr-only" x-show="!open">{{ "show answer" }}</span>
+        <span class="sr-only" x-show="open">{{ "hide answer" }}</span>
+        <svg width="15" height="9" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="m1 1 6.5 6.5L14 1" stroke="currentcolor" stroke-width="2" stroke-linecap="round"/></svg>
+      </button>
+    </dt>
+    <dd class="expandable__details" x-show="open" x-transition x-cloak>{{ params.details | safe }}</dd>
+  </div>
+{%- endmacro -%}

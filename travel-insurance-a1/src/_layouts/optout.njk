@@ -1,0 +1,115 @@
+---
+layout: base.njk
+bodyClass: "vers--doily"
+---
+<div class="site__doily  vers--optout  doily" x-data="request">
+  {%- if icon -%}
+    <div class="doily__icon" aria-hidden="true">
+      {{ icon | svgContents | safe }}
+    </div>
+  {%- endif -%}
+  <div id="optout" x-show="!success">
+    <h1 class="doily__title">{{ "Deactivation" | translate(locale) }}</h1>
+    <h2 class="doily__intro">{{ "Please," | translate(locale) }}</h2>
+    <p>{{ "click the following button if you want to deactivate the travel insurance coverage for your current trip." | translate(locale) }}</p>
+    <p class="error" x-cloak x-show="error && !loading" x-text="error" x-transition></p>
+    <p x-cloak x-show="error && !loading" x-transition style="margin-block-start: .75em"><strong>{{ "Something went wrong. Please try again, or contact our helpdesk:" | translate(locale) }}<a href="tel:{{ configData.helpdeskTel }}">{{ configData.helpdeskTel }}</a></strong></p>
+    <button class="button vers--outline  color-accent" @click="submit" :disabled="disabled">
+      <span class="button__spinner" x-cloak x-show="loading">
+        <svg class="spinner" viewBox="0 0 50 50"><circle class="path" stroke="currentcolor" cx="25" cy="25" r="20" fill="none" stroke-width="7"></circle></svg>
+      </span>
+      {{ "Deactivate Insurance Cover" | translate(locale) }}
+    </button>
+  </div>
+  <div id="optout-confirm" x-cloak x-show="success" x-transition>
+    <h2 class="doily__title">{{ "Confirmation" | translate(locale) }}</h2>
+    <p>{{ "The travel insurance coverage has successfully been deactivated for your current trip." | translate(locale)
+      }}</p>
+    <p>{{ "Your travel insurance contract remains active and the insurance coverage is automatically activated again for your next trip." | translate(locale) }}</p>
+  </div>
+</div>
+<script type="module">
+  import Alpine from 'alpinejs';
+  import {fetchAccessToken} from "{{ scriptsPath }}_svelte/api/fetchAccessToken";
+  import {deactivateInsurance} from "{{ scriptsPath }}_svelte/api/deactivateInsurance";
+
+  // initialize alpine
+  window.Alpine = Alpine;
+
+  const urlParams = new URLSearchParams(window.location.search);
+  const travelId = urlParams.has('id') && urlParams.get('id');
+
+  // build the config object for the api Requests
+  let apiRequestConfig = {
+    travelId: travelId,
+    apis: {
+      auth: {
+        subscriptionKey: '{{ api.auth.subscriptionKey }}',
+        username: '{{ api.auth.username }}',
+        password: '{{ api.auth.password }}',
+        basic: '{{ api.auth.basic }}'
+      },
+      methods: {
+        accessToken: '{{ api.methods.accessToken }}',
+        deactivate: '{{ api.methods.deactivate }}'
+      }
+    },
+    auth: undefined
+  }
+
+  // get the access token
+  fetchAccessToken(apiRequestConfig).then(response => {
+    if (!response || response.status === 'error') {
+      console.log('Access Token Error: ', response.message);
+      return;
+    } else {
+      apiRequestConfig.auth = `${response.data.token_type} ${response.data.access_token}`;
+    }
+  });
+
+  document.addEventListener('alpine:init', () => {
+    Alpine.data('request', () => ({
+      success: false,
+      error: null,
+      disabled: false,
+      loading: false,
+      init() {
+        if (!travelId) {
+          this.error = '{{ "No travel ID provided" | translate(locale) }}';
+          this.disabled = true;
+          return;
+        }
+      },
+      async submit() {
+        this.disabled = true;
+        this.loading = true;
+
+        deactivateInsurance(apiRequestConfig).then(response => {
+          this.error = null;
+          this.loading = false;
+
+          if (!response || response.status === 'error') {
+            if (response.status === 'error') {
+              if (response.error === '422') {
+                this.error = '{{ "Deactivation is not possible any longer, because the allowed time period was exceeded." | translate(locale) }}';
+              } else {
+                this.disabled = false;
+
+                if (response.error !== '') {
+                  this.error = response.error;
+                } else {
+                  this.error = '{{ "An unknown error occurred trying to deactivate the insurance cover." | translate(locale) }}';
+                }
+              }
+            }
+            return;
+          } else {
+            this.success = true;
+          }
+        });
+      }
+    }))
+  });
+
+  Alpine.start();
+</script>

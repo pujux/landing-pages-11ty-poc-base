@@ -1,0 +1,5 @@
+{%- macro contentSection(params) -%}
+<section class="content__section {{ params.class }}">
+    {{ caller()}}
+</section>
+{%- endmacro -%}

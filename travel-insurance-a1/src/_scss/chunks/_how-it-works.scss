@@ -1,0 +1,42 @@
+.how-it-works {
+  $p: &;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: var(--space-xs);
+
+
+  &__step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+
+    &:nth-child(2) {
+      #{$p}__icon {
+        transform: translateX(18%); // aligns the image to the center, which looks misaligned because of the circles that emit from the top right corner.
+      }
+    }
+  }
+
+  &__icon {
+    display: flex;
+    height: 140px;
+    align-items: end;
+    justify-content: center;
+
+    img {
+      display: block;
+    }
+  }
+
+  &__label {
+    font-weight: 400;
+    text-transform: uppercase;
+    font-size: calc(var(--step-1) * .85); // need some stepping out of the scale to match the design spec correctly (in this case, to make sure there are no line breaks)
+    margin-block-start: 2em;
+  }
+
+  p {
+    margin-block-start: .5em;
+  }
+}

@@ -1,0 +1,22 @@
+// dimensions
+$wrapper: 1000px; // derived from the XD file; A specific wrapper-width was not given, but the text-layers had a fixed with and aligned with other elements (e.g. text-layer "YOUR PROTECTION")
+
+// breakpoints
+$breakpoints: (
+  "tiny": 320px,
+  "small": 480px,
+  "medium": 640px,
+  "large": 840px,
+  "wrapper": $wrapper,
+  "huge": 1400px,
+  "massive": 1600px
+);
+
+// color weight scale
+$color-weights: (
+  "100": 94.9%,
+  "200": 73.7%,
+  "300": 60%,
+  "400": 40%,
+  "500": 20%,
+)

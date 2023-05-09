@@ -1,0 +1,13 @@
+@use '../tools';
+
+.key-message {
+  font-size: var(--step-4);
+  font-weight: 500;
+  color: var(--color-accent);
+  line-height: 1.25;
+  margin-block-start: .25em;
+
+  @include tools.wider-than('medium') {
+    text-align: center;
+  }
+}

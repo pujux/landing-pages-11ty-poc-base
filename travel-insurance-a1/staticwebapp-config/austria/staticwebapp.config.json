@@ -1,0 +1,36 @@
+{
+  "routes": [
+    {
+      "route": "/reiseschutz/anmelden",
+      "rewrite": "/"
+    },
+    {
+      "route": "/reiseschutz/deaktivieren",
+      "rewrite": "/optout"
+    },
+    {
+      "route": "/reiseschutz/success",
+      "rewrite": "/success"
+    },
+     {
+      "route": "/reiseschutz/single",
+      "rewrite": "/change-to-single"
+    },
+    {
+      "route": "/reiseschutz/anmelden/en",
+      "rewrite": "/en"
+    },
+    {
+      "route": "/reiseschutz/deaktivieren/en",
+      "rewrite": "/optout/en"
+    },
+    {
+      "route": "/reiseschutz/success/en",
+      "rewrite": "/success/en"
+    },
+     {
+      "route": "/reiseschutz/single/en",
+      "rewrite": "/change-to-single/en"
+    }
+  ]
+}

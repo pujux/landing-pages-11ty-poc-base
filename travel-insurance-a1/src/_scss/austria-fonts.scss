@@ -1,0 +1,49 @@
+$weights: (
+  "Light": (
+    "weight": 300,
+    "style": normal,
+  ),
+  "LightIta": (
+    "weight": 300,
+    "style": italic,
+  ),
+  "Book": (
+    "weight": 400,
+    "style": normal,
+  ),
+  "BookIta": (
+    "weight": 400,
+    "style": italic,
+  ),
+  "Medium": (
+    "weight": 500,
+    "style": normal,
+  ),
+  "MedIta": (
+    "weight": 500,
+    "style": italic,
+  ),
+  "Bold": (
+    "weight": 700,
+    "style": normal,
+  ),
+  "BoldIta": (
+    "weight": 700,
+    "style": italic,
+  )
+);
+
+$fontAssetsPath: '../assets/fonts/';
+
+@each $name, $weight in $weights {
+  @font-face {
+    font-family: "Gotham Rounded";
+    src: url($fontAssetsPath + 'GothamRnd-#{$name}-subset.woff2') format('woff2 supports variations'),
+      url($fontAssetsPath + 'GothamRnd-#{$name}-subset.woff2') format('woff2-variations'),
+      url($fontAssetsPath + 'GothamRnd-#{$name}-subset.woff2') format('woff2'),
+      url($fontAssetsPath + 'GothamRnd-#{$name}-subset.zopfli.woff') format('woff'),
+      url($fontAssetsPath + 'GothamRnd-#{$name}-subset.ttf') format('truetype');
+    font-weight: map-get($weight, "weight");
+    font-style: map-get($weight, "style");
+  }
+}

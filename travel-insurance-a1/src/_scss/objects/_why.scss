@@ -1,0 +1,51 @@
+@use '../tools' as *;
+
+.why {
+  font-size: var(--step-1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 1em;
+
+  &__icon {
+    svg {
+      display: block;
+      height: 3em;
+      width: auto;
+      color: var(--color-highlight);
+    }
+  }
+
+  &__headline {
+    font-family: var(--font-headlines);
+    text-transform: uppercase;
+    font-size: 1.115em;
+  }
+
+  &__description {
+    max-width: 60ch;
+    margin-inline: auto;
+  }
+}
+
+// listed. Should be refactored. No time.
+.whys {
+  --columns: 1;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(var(--columns), 1fr);
+  gap: var(--space-xl-2xl);
+  margin-block-start: calc(var(--content-spacing)/2);
+
+  @include wider-than(medium) {
+    --columns: 2;
+  }
+
+  &__item {
+    &:last-child:nth-child(5) {
+      grid-column: 1 / -1;
+    }
+  }
+}

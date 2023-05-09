@@ -1,0 +1,16 @@
+---js
+{
+  layout: 'doily.njk',
+  title: 'Glückwunsch.',
+  templateEngineOverride: 'md,njk',
+  icon: '/src/assets/doily-icons/chatbubble-travel.svg',
+  eleventyComputed: {
+    assetsPrefix: () => process.env.ENV ? '../../public/':'../../',
+    permalink: data => `${data.path}/success/index.html`
+  }
+}
+---
+
+## Du hast dich erfolgreich für den Reiseschutz smart angemeldet.
+
+Weitere Informationen dazu erhältst du in Kürze per Mail.

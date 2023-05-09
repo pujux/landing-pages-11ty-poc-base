@@ -1,0 +1,29 @@
+<ul class="link-list  languages-list" role="list">
+  {%- for key, lang in languages -%}
+    {%- if lang -%}
+      <li class="link-list__item">
+        <a href="{{ lang.url | url }}" lang="{{ lang.code }}" data-switch-language-link>{{ lang.label }}</a>
+      </li>
+    {%- endif -%}
+  {%- endfor -%}
+</ul>
+<script>
+  const languageLinks = document.querySelectorAll('[data-switch-language-link]');
+
+  // append all query parameters from the current url to this link.
+  languageLinks.forEach(link => {
+    const currentUrl = window.location;
+    const href = link.getAttribute('href');
+    let targetUrl = new URL(href, currentUrl);
+
+    new URL(currentUrl).searchParams.forEach((value, key) => {
+      targetUrl.searchParams.append(key, value);
+    });
+
+    link.addEventListener('click', e => {
+      e.preventDefault();
+
+      window.location.href = targetUrl;
+    });
+  });
+</script>

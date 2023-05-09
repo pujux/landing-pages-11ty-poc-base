@@ -4,4 +4,4 @@ RUN npm i -g @11ty/eleventy
 
 WORKDIR /app
 
-ENTRYPOINT ["eleventy"]
+CMD ["eleventy"]

@@ -1,0 +1,36 @@
+{
+  "routes": [
+    {
+      "route": "/putno/aktivacija",
+      "rewrite": "/"
+    },
+    {
+      "route": "/putno/deaktivacija",
+      "rewrite": "/optout"
+    },
+    {
+      "route": "/putno/uspeh",
+      "rewrite": "/success"
+    },
+    {
+      "route": "/putno/promena-u-individualno",
+      "rewrite": "/change-to-single"
+    },
+     {
+      "route": "/putno/aktivacija/en",
+      "rewrite": "/en"
+    },
+    {
+      "route": "/putno/deaktivacija/en",
+      "rewrite": "/optout/en"
+    },
+    {
+      "route": "/putno/uspeh/en",
+      "rewrite": "/success/en"
+    },
+    {
+      "route": "/putno/promena-u-individualno/en",
+      "rewrite": "/change-to-single/en"
+    }
+  ]
+}
