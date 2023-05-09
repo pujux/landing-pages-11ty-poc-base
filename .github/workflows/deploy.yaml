@@ -17,5 +17,5 @@ jobs:
       - uses: peter-evans/repository-dispatch@v1
         with:
           token: ${{ secrets.PAT }}
-          repository: ${{ github.repository_owner }}/${{ env.PREFIX }}-${{ github.event.inputs.page }}}
+          repository: ${{ github.repository_owner }}/${{ env.PREFIX }}-${{ github.event.inputs.page }}
           event-type: build-and-deploy
