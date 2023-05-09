@@ -1,0 +1,29 @@
+name: Deploy specific Page to GitHub Pages
+
+on:
+  workflow_dispatch:
+    inputs:
+      page:
+        type: choice
+        options:
+          - test-app
+          - test-2-app
+          - travel-insurance-a1
+        required: true
+
+env: 
+  PREFIX: landing-pages-11ty-poc
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}-${{ github.event.inputs.page }}
+  cancel-in-progress: true
+
+jobs:
+  trigger-workflow:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: peter-evans/repository-dispatch@v2
+        with:
+          token: ${{ secrets.PAT }}
+          repository: ${{ github.repository_owner }}/${{ env.PREFIX }}-${{ github.event.inputs.page }}}
+          event-type: build-and-deploy

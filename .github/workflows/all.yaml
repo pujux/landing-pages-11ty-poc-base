@@ -1,11 +1,7 @@
-name: Deploy specific Page to GitHub Pages
+name: Deploy all Pages to GitHub Pages
 
 on:
   workflow_dispatch:
-    inputs:
-      page:
-        description: 'Name of the page to build & deploy'
-        required: true
 
 env: 
   PREFIX: landing-pages-11ty-poc
@@ -17,9 +13,15 @@ concurrency:
 jobs:
   trigger-workflow:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        page:
+          - test-app
+          - test-2-app
+          - travel-insurance-a1
     steps:
-      - uses: peter-evans/repository-dispatch@v1
+      - uses: peter-evans/repository-dispatch@v2
         with:
           token: ${{ secrets.PAT }}
-          repository: ${{ github.repository_owner }}/${{ env.PREFIX }}-${{ github.event.inputs.page }}}
+          repository: ${{ github.repository_owner }}/${{ env.PREFIX }}-${{ matrix.page }}
           event-type: build-and-deploy
