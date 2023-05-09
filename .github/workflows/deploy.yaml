@@ -4,12 +4,18 @@ on:
   workflow_dispatch:
     inputs:
       page:
+        description: 'Name of the folder to build & deploy'
         required: true
 
-jobs:
-  greet:
-    runs-on: ubuntu-latest
+env: 
+  PREFIX: landing-pages-11ty-poc
 
+jobs:
+  trigger-workflow:
+    runs-on: ubuntu-latest
     steps:
-    - name: Send greeting
-      run: echo ${{ github.event.inputs.page }}
+      - uses: peter-evans/repository-dispatch@v1
+        with:
+          token: ${{ secrets.PAT }}
+          repository: ${{ github.repository_owner }}/${{ env.PREFIX }}-${{ github.event.inputs.page }}}
+          event-type: build-and-deploy
