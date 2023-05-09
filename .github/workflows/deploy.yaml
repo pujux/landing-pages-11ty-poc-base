@@ -4,11 +4,15 @@ on:
   workflow_dispatch:
     inputs:
       page:
-        description: 'Name of the folder to build & deploy'
+        description: 'Name of the page to build & deploy'
         required: true
 
 env: 
   PREFIX: landing-pages-11ty-poc
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}-${{ github.event.inputs.page }}
+  cancel-in-progress: true
 
 jobs:
   trigger-workflow:
@@ -17,5 +21,5 @@ jobs:
       - uses: peter-evans/repository-dispatch@v1
         with:
           token: ${{ secrets.PAT }}
-          repository: ${{ github.repository_owner }}/${{ env.PREFIX }}-${{ github.event.inputs.page }}
+          repository: ${{ github.repository_owner }}/${{ env.PREFIX }}-${{ github.event.inputs.page }}}
           event-type: build-and-deploy
