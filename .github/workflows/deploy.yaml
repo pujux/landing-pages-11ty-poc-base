@@ -1,0 +1,15 @@
+name: Deploy specific Page to GitHub Pages
+
+on:
+  workflow_dispatch:
+    inputs:
+      page:
+        required: true
+
+jobs:
+  greet:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Send greeting
+      run: echo ${{ github.event.inputs.page }}
